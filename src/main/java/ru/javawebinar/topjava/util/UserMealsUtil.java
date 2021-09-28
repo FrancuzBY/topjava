@@ -85,18 +85,12 @@ public class UserMealsUtil {
     }
 
     private static Map<LocalDate, Integer> getMapTotalCaloriesPerDayForLoop(List<UserMeal> meals) {
-
         Map<LocalDate, Integer> mapCaloriesPerDay = new HashMap<>();
-
         for (UserMeal userMeal : meals) {
             LocalDate dateMeal = userMeal.getDate();
             int mealCalories = userMeal.getCalories();
             int currentTotalCalories = mapCaloriesPerDay.getOrDefault(dateMeal, 0);
-            if (currentTotalCalories > 0) {
-                mapCaloriesPerDay.put(dateMeal, currentTotalCalories + mealCalories);
-            } else {
-                mapCaloriesPerDay.put(dateMeal, mealCalories);
-            }
+            mapCaloriesPerDay.put(dateMeal, currentTotalCalories + mealCalories);
         }
         return mapCaloriesPerDay;
     }
