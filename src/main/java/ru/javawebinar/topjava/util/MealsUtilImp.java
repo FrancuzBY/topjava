@@ -2,11 +2,8 @@ package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -18,12 +15,12 @@ import java.util.stream.Stream;
 
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
-import static ru.javawebinar.topjava.util.TimeUtil.isBetweenHalfOpen;
+import static ru.javawebinar.topjava.util.TimeUtilImp.isBetweenHalfOpen;
 
-public class MealsUtil {
+public class MealsUtilImp implements MealsUtil{
     public static void main(String[] args) throws InterruptedException {
 
-        List<Meal> meals = initializeMeals();
+        List<Meal> meals = MealsUtil.getAllMeals();
 
         final LocalTime startTime = LocalTime.of(7, 0);
         final LocalTime endTime = LocalTime.of(12, 0);
@@ -49,15 +46,20 @@ public class MealsUtil {
         System.out.println(filteredByCollector(meals, startTime, endTime, 2000));
     }
 
-    public static List<Meal> initializeMeals() {
-        return Arrays.asList(
-                new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
-                new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
-                new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500),
-                new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100),
-                new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000),
-                new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500),
-                new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
+    @Override
+    public void saveMeals(Meal meal) {
+        System.out.println("Ooops, in progress...");
+    }
+
+    @Override
+    public Meal getMeal(int id) {
+        System.out.println("Ooops, in progress...");
+        return null;
+    }
+
+    @Override
+    public void deleteMeal(int id) {
+        System.out.println("Ooops, in progress...");
     }
 
     public static List<MealTo> filteredByStreams(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
@@ -128,7 +130,7 @@ public class MealsUtil {
         meals.forEach(meal -> {
             LocalDate localDate = meal.getDate();
             boolean excess = caloriesSumByDate.merge(localDate, meal.getCalories(), Integer::sum) > caloriesPerDay;
-            if (TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime)) {
+            if (TimeUtilImp.isBetweenHalfOpen(meal.getTime(), startTime, endTime)) {
                 MealTo mealTo = createTo(meal, excess);
                 mealsTo.add(mealTo);
                 if (!excess) {
@@ -221,7 +223,7 @@ public class MealsUtil {
         Predicate<Boolean> predicate = b -> true;
         for (Meal meal : meals) {
             caloriesSumByDate.merge(meal.getDateTime().toLocalDate(), meal.getCalories(), Integer::sum);
-            if (TimeUtil.isBetweenHalfOpen(meal.getDateTime().toLocalTime(), startTime, endTime)) {
+            if (TimeUtilImp.isBetweenHalfOpen(meal.getDateTime().toLocalTime(), startTime, endTime)) {
                 predicate = predicate.and(b -> mealsTo.add(createTo(meal, caloriesSumByDate.get(meal.getDateTime().toLocalDate()) > caloriesPerDay)));
             }
         }
@@ -236,7 +238,7 @@ public class MealsUtil {
 
         for (Meal meal : meals) {
             caloriesPerDays.merge(meal.getDate(), meal.getCalories(), Integer::sum);
-            if (TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime)) {
+            if (TimeUtilImp.isBetweenHalfOpen(meal.getTime(), startTime, endTime)) {
                 consumer = consumer.andThen(dummy -> result.add(createTo(meal, caloriesPerDays.get(meal.getDateTime().toLocalDate()) > caloriesPerDay)));
             }
         }
