@@ -33,6 +33,9 @@ public class InMemoryMealRepository implements MealRepository {
     public Meal save(int userId, Meal meal) {
         log.info("save {}", meal);
         Map<Integer, Meal> mealMap = repository.get(userId);
+        if (mealMap == null) {
+            mealMap = new ConcurrentHashMap<>();
+        }
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             mealMap.put(meal.getId(), meal);
