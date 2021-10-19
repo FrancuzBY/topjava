@@ -27,18 +27,12 @@ public class MealService {
         checkNotFoundWithId(repository.delete(userId, id), id);
     }
 
-    public MealTo get(int userId, int id) {
-        Meal meal = repository.get(userId, id);
-        MealTo mealTo = convertMealToDto(meal);
-        return checkNotFoundWithId(mealTo, id);
+    public Meal get(int userId, int id) {
+        return repository.get(userId, id);
     }
 
     public Collection<Meal> getAll(int userId) {
         return repository.getAll(userId);
-    }
-
-    private MealTo convertMealToDto(Meal meal) {
-        return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), false);
     }
 
 }
