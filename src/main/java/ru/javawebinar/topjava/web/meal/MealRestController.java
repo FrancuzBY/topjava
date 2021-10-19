@@ -25,7 +25,7 @@ public class MealRestController {
     }
 
     public void delete(int userId, int id) {
-        checkNotFoundWithId(service.delete(userId, id), id);
+        service.delete(userId, id);
     }
 
     public Meal get(int userId, int id) {
