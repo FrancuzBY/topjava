@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -66,7 +67,7 @@ public class InMemoryMealRepository implements MealRepository {
         Map<Integer, Meal> mealMap = repository.get(userId);
         return mealMap.values()
                 .stream()
-                .sorted(Collections.reverseOrder())
+                .sorted((Comparator.comparing(Meal::getDate)).reversed())
                 .collect(Collectors.toList());
     }
 }
