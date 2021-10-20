@@ -44,10 +44,9 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         log.info("getAll");
-        return repository.entrySet()
+        return repository.values()
                 .stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.comparing(AbstractNamedEntity::getName)))
-                .map(Map.Entry::getValue)
+                .sorted((Comparator.comparing(AbstractNamedEntity::getName)))
                 .collect(Collectors.toList());
     }
 

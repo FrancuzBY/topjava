@@ -8,10 +8,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -32,10 +29,7 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public Meal save(int userId, Meal meal) {
         log.info("save {}", meal);
-        Map<Integer, Meal> mealMap = repository.get(userId);
-        if (mealMap == null) {
-            mealMap = new ConcurrentHashMap<>();
-        }
+        Map<Integer, Meal> mealMap = getMealMap(userId);
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             mealMap.put(meal.getId(), meal);
@@ -46,32 +40,41 @@ public class InMemoryMealRepository implements MealRepository {
             if (mealMap.isEmpty()) {
                 return null;
             }
-            return mealMap.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
         }
+        return mealMap.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
     }
 
     @Override
     public boolean delete(int userId, int id) {
         log.info("delete {}", id);
-        Map<Integer, Meal> mealMap = repository.get(userId);
+        Map<Integer, Meal> mealMap = getMealMap(userId);
         return mealMap.remove(id) != null;
     }
 
     @Override
     public Meal get(int userId, int id) {
         log.info("get {}", id);
-        Map<Integer, Meal> mealMap = repository.get(userId);
+        Map<Integer, Meal> mealMap = getMealMap(userId);
         return mealMap.get(id);
     }
 
     @Override
-    public Collection<Meal> getAll(int userId) {
+    public List<Meal> getAll(int userId) {
         log.info("getAll");
-        Map<Integer, Meal> mealMap = repository.get(userId);
+        Map<Integer, Meal> mealMap = getMealMap(userId);
         return mealMap.values()
                 .stream()
                 .sorted((Comparator.comparing(Meal::getDate)).reversed())
                 .collect(Collectors.toList());
+    }
+
+    private Map<Integer, Meal> getMealMap(int userId) {
+        Map<Integer, Meal> mealMap = repository.get(userId);
+        if (mealMap == null) {
+            mealMap = new ConcurrentHashMap<>();
+            repository.put(userId, mealMap);
+        }
+        return mealMap;
     }
 }
 
