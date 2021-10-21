@@ -71,7 +71,7 @@ public class InMemoryMealRepository implements MealRepository {
         return getAllFiltered(userId, meal -> Util.isBetweenHalfOpen(meal.getDateTime(), startDateTime, endDateTime));
     }
 
-    public List<Meal> getAllFiltered(int userId, Predicate<Meal> filter) {
+    private List<Meal> getAllFiltered(int userId, Predicate<Meal> filter) {
         Map<Integer, Meal> mealMap = repository.get(userId);
         return CollectionUtils.isEmpty(mealMap)? Collections.emptyList():mealMap.values()
                 .stream()
