@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true)
 public class JpaMealRepository implements MealRepository {
 
     @PersistenceContext
@@ -26,10 +26,10 @@ public class JpaMealRepository implements MealRepository {
         meal.setUser(user);
         if (meal.isNew()) {
             em.persist(meal);
-            return meal;
         } else {
-            return em.merge(meal);
+            em.merge(meal);
         }
+        return meal;
     }
 
     @Override

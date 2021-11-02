@@ -25,7 +25,6 @@ public class JpaUserRepository implements UserRepository {
 */
 
     @PersistenceContext
-    @Autowired
     private EntityManager em;
 
     @Override
