@@ -1,11 +1,11 @@
 package ru.javawebinar.topjava.repository.jpa;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-//@Transactional(readOnly = true)
+@Transactional(readOnly = true)
 public class JpaMealRepository implements MealRepository {
 
     @PersistenceContext
@@ -27,7 +27,10 @@ public class JpaMealRepository implements MealRepository {
         if (meal.isNew()) {
             em.persist(meal);
         } else {
-            em.merge(meal);
+            Meal mealAfterUpdate = em.merge(meal);
+            if (mealAfterUpdate == null) {
+                throw new NotFoundException("is Empty");
+            }
         }
         return meal;
     }
@@ -35,35 +38,35 @@ public class JpaMealRepository implements MealRepository {
     @Override
     @Transactional
     public boolean delete(int id, int userId) {
-        User user = em.find(User.class, userId);
         return em.createNamedQuery(Meal.DELETE)
                 .setParameter("id", id)
-                .setParameter("user", user)
+                .setParameter("userId", userId)
                 .executeUpdate() != 0;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        User user = em.find(User.class, userId);
-        return (Meal) em.createNamedQuery(Meal.GET)
+         List<Meal> meals = em.createNamedQuery(Meal.GET, Meal.class)
                 .setParameter("id", id)
-                .setParameter("user", user)
-                .getSingleResult();
+                .setParameter("userId", userId)
+                 .getResultList();
+         if (meals.isEmpty()) {
+             throw new NotFoundException("is Empty");
+         }
+         return meals.get(0);
     }
 
     @Override
     public List<Meal> getAll(int userId) {
-        User user = em.find(User.class, userId);
-        return em.createNamedQuery(Meal.ALL_SORTED)
-                .setParameter("user", user)
+        return em.createNamedQuery(Meal.ALL_SORTED, Meal.class)
+                .setParameter("userId", userId)
                 .getResultList();
     }
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        User user = em.find(User.class, userId);
-        return em.createNamedQuery(Meal.GET_BETWEEN_HALF_OPEN)
-                .setParameter("user", user)
+        return em.createNamedQuery(Meal.GET_BETWEEN_HALF_OPEN, Meal.class)
+                .setParameter("userId", userId)
                 .setParameter("startDateTime", startDateTime)
                 .setParameter("endDateTime", endDateTime)
                 .getResultList();
