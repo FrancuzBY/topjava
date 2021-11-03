@@ -1,6 +1,8 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -29,6 +31,9 @@ public class MealServiceTest {
 
     @Autowired
     private MealService service;
+
+    @Rule
+    public final TestName name = new TestName();
 
     @Test
     public void delete() {
