@@ -92,9 +92,33 @@
     </beans>
 
     <beans profile="jdbc">
+        <bean class="ru.javawebinar.topjava.repository.jdbc.JdbcUserRepository">
+            <constructor-arg index="0" ref=""/>
+            <constructor-arg index="1" ref=""/>
+        </bean>
+        <bean class="ru.javawebinar.topjava.repository.jdbc.JdbcMealRepository">
+            <constructor-arg index="0" ref=""/>
+            <constructor-arg index="1" ref=""/>
+        </bean>
     </beans>
     <beans profile="jpa">
+        <bean class="ru.javawebinar.topjava.repository.jpa.JpaUserRepository">
+            <!--            <constructor-arg index="0" ref=""/>-->
+            <!--            <constructor-arg index="1" ref="transmission"/>-->
+        </bean>
+        <bean class="ru.javawebinar.topjava.repository.jpa.JpaMealRepository">
+            <!--            <constructor-arg index="0" ref=""/>-->
+            <!--            <constructor-arg index="1" ref="transmission"/>-->
+        </bean>
     </beans>
     <beans profile="datajpa">
+        <bean class="ru.javawebinar.topjava.repository.datajpa.DataJpaUserRepository">
+            <!--            <constructor-arg index="0" ref=""/>-->
+            <!--            <constructor-arg index="1" ref="transmission"/>-->
+        </bean>
+        <bean class="ru.javawebinar.topjava.repository.datajpa.DataJpaMealRepository">
+            <!--            <constructor-arg index="0" ref=""/>-->
+            <!--            <constructor-arg index="1" ref="transmission"/>-->
+        </bean>
     </beans>
 </beans>
