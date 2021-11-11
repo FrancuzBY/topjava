@@ -1,9 +1,10 @@
-package ru.javawebinar.topjava.service;
+package ru.javawebinar.topjava.service.Jpa;
 
 import org.springframework.test.context.ActiveProfiles;
 import ru.javawebinar.topjava.ActiveDbProfileResolver;
+import ru.javawebinar.topjava.service.UserServiceTest;
 
 @ActiveProfiles(resolver = ActiveDbProfileResolver.class, profiles = "jpa")
-public class UserServiceTestJpa extends UserServiceTest {
+public class UserServiceJpaTest extends UserServiceTest {
 
 }

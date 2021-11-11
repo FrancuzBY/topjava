@@ -19,7 +19,6 @@ import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 @Controller
-@ActiveProfiles("hsqldb")
 public class MealRestController {
     private static final Logger log = LoggerFactory.getLogger(MealRestController.class);
 

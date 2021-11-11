@@ -9,18 +9,19 @@ import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
+
 import java.util.List;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.UserTestData.*;
 
-public abstract class UserServiceTest extends ServiceTest {
+public abstract class UserServiceTest extends AbstractServiceTest{
 
     @Autowired
-    protected UserService service;
+    private UserService service;
 
     @Autowired
-    protected CacheManager cacheManager;
+    private CacheManager cacheManager;
 
     @Before
     public void setup() {
