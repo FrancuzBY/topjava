@@ -18,7 +18,8 @@
 
         <spring.version>5.3.11</spring.version>
         <tomcat.version>9.0.54</tomcat.version>
-        <spring-data-jpa.version>2.5.6</spring-data-jpa.version>
+        <spring.security.version>5.6.0</spring.security.version>
+        <spring-data-jpa.version>2.6.0</spring-data-jpa.version>
         <jackson.version>2.13.0</jackson.version>
 
         <!-- Logging -->
@@ -159,6 +160,18 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
             <version>${spring-data-jpa.version}</version>
+        </dependency>
+
+        <!--security-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
         </dependency>
 
         <!--DataBase-->
@@ -344,6 +357,18 @@
             <version>1.8.2</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+
     </dependencies>
 
     <profiles>
